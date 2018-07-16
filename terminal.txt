@@ -1,0 +1,101 @@
+TERMINAL
+
+
+
+find port : lsof -wni tcp:8080
+kill process : kill -9 PID 
+
+
+1) get my php path 
+    > which php
+2) ps -ax
+    > kill -9 22269
+
+
+/******************* Clear cache ***************************/
+sudo sh -c 'echo 1 >/proc/sys/vm/drop_caches'
+sudo sh -c 'echo 2 >/proc/sys/vm/drop_caches'
+sudo sh -c 'echo 3 >/proc/sys/vm/drop_caches'
+/******************* End of Clear cache ********************/
+
+/*******************************************/
+
+
+Daily Backup
+
+0 0  * mysqldump -u root aa > /var/www/backups/backup.sql
+0 0  * mysqldump -u root aa > /var/www/backups/backups.sql.gz
+
+
+mysqldump -u root aa > /var/www/backups/backup.sql
+
+mysqldump -u root aa > /var/www/backups/backups.sql.gz
+
+
+Create Zip by this Command TERMINAL >_  zip -r cpanel_admin_19_12_17.zip ./ -x "*.zip" -x \*.git\* 
+
+except all .zip and .git folder
+/*******************************************/
+
+
+mysql -u root -p sprytar < /home/imobdev6/Downloads/sprytar.sql
+
+
+mysql -u root -p  virgla-dev < /var/www/html/virgla-dev.sql
+
+
+1) Give permission to all directories ::  find public_html -type d -exec sudo chmod 0755 {} \;
+
+2) Give permission to all files :: find public_html/ -type f -exec sudo chmod 0644 {} \;
+
+
+
+[5:03:29 PM] Goran: jack.thorogood@outlook.com
+m0nit0R#
+
+
+mysql -u root -p  pnp < /var/www/html/pnp.sql
+
+UPDATE mysql.user SET authentication_string=PASSWORD(''), plugin='mysql_native_password' WHERE User='root' AND Host='%';
+EXIT;
+
+
+sudo apt-get install curl
+sudo service apache2 restart
+sudo apt-get install php5-curl
+sudo service apache2 restart
+
+OR
+
+sudo /etc/init.d/apache2 restart
+
+-a : Preserve the specified attributes such as directory an file mode, ownership, timestamps, if possible additional attributes: context, links, xattr, all.
+
+-v : Explain what is being done.
+
+-r : Copy directories recursively. Example
+
+Copy a folder called /tmp/conf to /tmp/backup:
+
+cp -avr /tmp/conf/ /tmp/backup
+
+
+
+
+cp -avr /home/sprytar/www/public/. /mnt/bucket/cdn/
+
+
+kill browser process
+
+pkill firefox
+killall firefox
+
+pkill --oldest chrome
+killall google-chrome-stable
+
+
+
+
+
+
+
