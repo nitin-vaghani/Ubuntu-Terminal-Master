@@ -1,15 +1,46 @@
 TERMINAL
 
-
+https://www.sharedrop.io/
 
 find port : lsof -wni tcp:8080
 kill process : kill -9 PID 
 
-
 1) get my php path 
     > which php
+
 2) ps -ax
     > kill -9 22269
+
+3). Get list of Crons running on server
+    ps ufx | grep cron
+
+   OR
+   ps ufx | grep php
+
+
+4) pkill -f 'netbeans'
+
+kill -9 17616
+
+
+ps -e | grep "index.php"
+kill -6 $(pgrep -U root index.php) 
+
+ ps ufx | grep Statistics:pdf
+
+pidof Statistics:pdf
+
+/************************* You want to import large .sql quickly? ***********************/
+Go to mysql from Terminal > mysql -u root -p
+mysql > 
+SET autocommit=0 ; source /var/www/html/laravelBlog.sql ; COMMIT ;
+
+SET autocommit=0 ; source /home/username/Downloads/live.sql ; COMMIT ;
+
+mysqldump -u root -p pass > live.sql
+
+
+/**************************************************************************************************/
 
 
 /******************* Clear cache ***************************/
@@ -18,7 +49,125 @@ sudo sh -c 'echo 2 >/proc/sys/vm/drop_caches'
 sudo sh -c 'echo 3 >/proc/sys/vm/drop_caches'
 /******************* End of Clear cache ********************/
 
+/************************** Install PHP Different Versions *******************************************/
+
+sudo apt-get install php5.6-mcrypt php5.6-mbstring php5.6-curl php5.6-cli php5.6-mysql php5.6-gd php5.6-intl php5.6-xsl php5.6-zip libapache2-mod-php5.6 php5.6-xdebug
+
+sudo apt-get install php7.3-curl php7.3-dev php7.3-gd php7.3-mbstring php7.3-zip php7.3-mysql php7.3-xml php7.3-bcmath php7.3-intl php7.3-mcrypt 
+
+sudo apt-get install php7.2-curl php7.2-dev php7.2-gd php7.2-mbstring php7.2-zip php7.2-mysql php7.2-xml php7.2-bcmath php7.2-cli php7.2-common php7.2-intl php7.2-json php7.2-soap php7.2-fpm php7.2-xsl php7.2-iconv
+
+/************************** END Install PHP Different Versions *******************************************/
+
+/************************** SCP command ***************************/
+scp user@server:/path/to/remotefile.zip /Local/Target/Destination
+
+
+
+/************************** rsync command *************************/
+
+copy file from local machine to server
+
+rsync -avz -e "ssh -i /path/to/key.pem" /path/to/file.txt  <username>@<ip/domain>:/path/to/directory/
+
+copy file from server to local machine
+
+rsync -avz -e "ssh -i /path/to/key.pem" <username>@<ip/domain>:/path/to/directory/file.txt  /path/to/directory/
+
+Sample: rsync -avzp -e "ssh -i /home/username/ssh/server.pem" ubuntu@IP:/var/www/html/adminprod/log/ /var/www/html/rsyn
+
+Working rsync example
+
+scp ssh -i "/home/username/ssh/server.pem" ubuntu@IP:/var/www/html/backups/2019-05-31_backup.zip /var/www/html/
+
+rsync -avz -e --progress "ssh -i /home/username/ssh/server.pem" ubuntu@IP:/var/www/html/adminprod/log/ /var/www/html/rsyn
+
+set .pem file in your current directoy
+add "~" sign if you are use WHM
+
+there is two options
+1. Want to copy folder with file then don't add slash at end of folder name in source like(article without slash in end)
+rsync -avz -e "ssh -i server.pem" ubuntu@IP:/var/www/html/adminprod/www/upload/article ~/public_html/www/upload/
+
+rsync -avz -e "ssh -i virgla_robot.pem" ubuntu@IP:/var/www/html/adminprod/www/upload/pdf ~/public_html/prod/www/upload/
+
+
+Here is a list of some of the most common rsync options:
+
+    --delete - delete files that don't exist on sender (system)
+    -v - verbose (-vv will provide more detailed information)
+    -e "ssh options" - specify the ssh as remote shell
+    -a - archive mode - it preserves permissions (owners, groups), times, symbolic links, and devices
+    -r - recurse into directories
+    -z - compress file data during transfer
+    --exclude 'foldername' – excludes the corresponding folder from transfer
+    -P – show progress during transfer
+
+/************************** END of rsync command *************************/
+
+
+
+/******************* FFMPEG in ubuntu *****************************/
+
+hint: https://www.ostechnix.com/20-ffmpeg-commands-beginners/
+
+apt-get install ffmpeg
+
+First try with default compression: ffmpeg -i input.mp4 output.mp4
+
+compress with bitret:ffmpeg -i small.mp4 -b 1000000 outputfilename.mp4
+
+
+
+/******** find-size-directory-linux ***********************/
+https://www.ostechnix.com/find-size-directory-linux/
+du -sh uploads/
+/******** find-size-directory-linux ***********************/
+
+
+/********* CLEAR CONTENT FROM MULTIPLE FILES *****/
+echo -n | tee access.log cron.log  error.log exception.log
+
+echo -n | tee access.log  api.log  cron.log  error.log  exception.log  info.log  warning.log
+
+echo -n | tee article_fetch_log.txt article_push_log.txt  cron.log  
+
+/************************************************************/
+
 /*******************************************/
+
+DROP USER 'root'@'localhost';
+CREATE USER 'root'@'%' IDENTIFIED BY '=JqLUm6QdXFrHFr8';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+
+CREATE DATABASE dbname;
+
+CREATE USER 'root'@'localhost' IDENTIFIED BY '=JqLUm6QdXFrHFr8';
+
+GRANT ALL PRIVILEGES ON dbname.* TO 'root'@'localhost'; 
+
+
+
+
+
+sudo apt-get autoremove --purge skype
+sudo apt-get update && sudo apt-get upgrade
+sudo apt-get install libasound2-plugins:i386
+killall skype -s 9
+
+
+
+
+tar -zcvf /var/www/html/me.tar.gz /var/www/html/proj/
+tar -czvf /var/www/html/medeasy.tar.gz /var/www/html/proj/
+tar cf - medeasy/ | gzip > medeasy3.tar.gz
+
+
+========== NTP timezone offeset remove from AWS ================
+
+sudo ntpdate 1.ro.pool.ntp.org
 
 
 Daily Backup
@@ -32,16 +181,48 @@ mysqldump -u root aa > /var/www/backups/backup.sql
 mysqldump -u root aa > /var/www/backups/backups.sql.gz
 
 
-Create Zip by this Command TERMINAL >_  zip -r cpanel_admin_19_12_17.zip ./ -x "*.zip" -x \*.git\* 
+EXPORT ALL DATABASE using TERMINAL: 
+
+
+mysqldump -u root -p --all-databases --skip-lock-tables > alldb.sql
+
+
+mysqldump -u root -p --all-databases > /var/www/html/all_databases.sql
+
+mysqldump -u root -p --all-databases | gzip > /var/www/html/all_databases.gz
+
+mysqldump -u [user] -p –all-databases > [file_name].sql
+
+
+IMPORT ALL DATABASE using TERMINAL: 
+
+mysql -u root -p < alldatabases.sql
+
+
+Create Zip by this Command TERMINAL >_  zip -r cpanel_admin_19_12_17.zip ./ -x "*.zip" -x \*.git\*  -x www/upload/article/\*
+
+zip -r friin_com.zip ./ -x "*.zip"
+
+
+ln -s ../storage/app/public ./public/storage
+
+ln -s /home/u653430769/domains/abc.com/public_html/storage/app/public /home/u653430769/domains/abc.com/public_html/storage
+
+
+ln -s storage/app/public public/storage
+
 
 except all .zip and .git folder
 /*******************************************/
 
 
-mysql -u root -p sprytar < /home/imobdev6/Downloads/sprytar.sql
+mysql -u root -p pass < /home/username/Downloads/db.sql
 
 
-mysql -u root -p  virgla-dev < /var/www/html/virgla-dev.sql
+mysql -u root -p  aa-dev < /var/www/html/aa-dev.sql
+
+
+mysql -u root -p CCRN < /home/username/Downloads/db.sql
 
 
 1) Give permission to all directories ::  find public_html -type d -exec sudo chmod 0755 {} \;
@@ -50,11 +231,7 @@ mysql -u root -p  virgla-dev < /var/www/html/virgla-dev.sql
 
 
 
-[5:03:29 PM] Goran: jack.thorogood@outlook.com
-m0nit0R#
-
-
-mysql -u root -p  pnp < /var/www/html/pnp.sql
+mysql -u root -p  pnp < /var/www/html/abb.sql
 
 UPDATE mysql.user SET authentication_string=PASSWORD(''), plugin='mysql_native_password' WHERE User='root' AND Host='%';
 EXIT;
@@ -94,6 +271,105 @@ pkill --oldest chrome
 killall google-chrome-stable
 
 
+*************************************************** SWAPMEMORY ********************************************************
+
+Simple fallocate usage for adding a second swap file
+Check swap situation:
+
+$ sudo swapon -s
+Filename                Type        Size    Used    Priority
+/swapfile               file        262140  246276  -1
+
+Create a 4G swap file
+
+Standard way of creating and activating a swap file.
+
+$ size="4G" && file_swap=/swapfile_$size.img && sudo touch $file_swap && sudo fallocate -l $size /$file_swap && sudo mkswap /$file_swap && sudo swapon -p 20 /$file_swap
+
+Make your swap permanent
+
+Add a line in your /etc/fstab file so that swap will be initialized on the next reboot (we also update here the priority of the newly created swap space and we update the priority of the old swap file
+
+# in your /ets/fstab file
+/swapfile    none    swap    sw,pri=10      0       0
+/swapfile_4G.img     none    swap    sw,pri=20      0       0
+
+Check swap situation after reboot:
+
+$ sudo swapon  -s
+Filename       Type     Size        Used    Priority
+/swapfile      file     262140      0       10
+/swapfile_4G.img       file     4194300     0       20
+
+Remove one of the swap space (for example the original 256Mb)
+Edit /etc/fstab
+
+Remove the line related to the swap you want to remove
+Delete that swap
+
+Delete and remove the swap file.
+
+sudo swapoff /mnt/swapfile && sudo rm /mnt/swapfile
+
+
+*************************************************** END OF SWAPMEMORY ********************************************************
+
+
+<?php
+
+// ********************************* FIRST METHOD **********************************
+
+
+
+sudo a2dismod php5.6
+sudo a2enmod php7.2
+sudo service apache2 restart
+  
+sudo update-alternatives --config php
+  
+  
+//  You will get below screen in CMD
+  
+    Selection    Path             Priority   Status
+------------------------------------------------------------
+  0            /usr/bin/php7.3   73        auto mode
+  1            /usr/bin/php5.6   56        manual mode
+* 2            /usr/bin/php7.3   73        manual mode
+
+// Press <enter> to keep the current choice[*], or type selection number: 1
+  
+// ********************************* SECOND METHOD **********************************
+
+// Switch Between PHP Version
+
+// If you have installed multiple PHP versions and want to use differently than the default. Use following steps to switch between php5.6 and php7.2 version. You can use the same command for other PHP versions.
+// From PHP 5.6 => PHP 7.2
+
+// Apache:-
+
+sudo a2dismod php5.6
+sudo a2enmod php7.2
+sudo service apache2 restart
+
+// CLI:-
+
+sudo update-alternatives --set php /usr/bin/php7.2
+sudo update-alternatives --set phpize /usr/bin/phpize7.2
+sudo update-alternatives --set php-config /usr/bin/php-config7.2
+
+// From PHP 7.2 => PHP 5.6
+
+// Apache:-
+
+sudo a2dismod php7.2
+sudo a2enmod php5.6
+sudo service apache2 restart
+
+// CLI:-
+
+sudo update-alternatives --set php /usr/bin/php5.6
+sudo update-alternatives --set phpize /usr/bin/phpize5.6
+sudo update-alternatives --set php-config /usr/bin/php-config5.6
 
 
 
